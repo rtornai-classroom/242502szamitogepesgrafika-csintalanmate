@@ -1,4 +1,0 @@
-﻿  Source.cpp
-C:\egyetem\hazik\6.felev\szamitogepesgrafika\project1\Project1\Source.cpp(145,25): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
-C:\egyetem\hazik\6.felev\szamitogepesgrafika\project1\Project1\Source.cpp(265,55): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  Project1.vcxproj -> C:\egyetem\hazik\6.felev\szamitogepesgrafika\project1\Project1\x64\Debug\Project1.exe
