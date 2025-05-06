@@ -9,5 +9,5 @@ out vec4 myColor;
 void main(void)
 {
 	gl_Position = vec4(aPos, 1.0);
-	myColor = vec4(color, 0.00);
+	myColor = vec4(color, 1.0);
 }

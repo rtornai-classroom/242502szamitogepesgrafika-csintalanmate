@@ -37,6 +37,7 @@ glm::vec3 bezierCurveColor = glm::vec3(0.9f, 0.7f, 0.0f);
 GLuint		VBO[numVBOs];
 GLuint		VAO[numVAOs];
 GLuint		colorLocation;
+GLuint		isPointLocation;
 GLuint		renderingProgram;
 GLint		dragged = -1;
 bool		added = false;
@@ -295,6 +296,8 @@ void init(GLFWwindow* window) {
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	colorLocation = glGetUniformLocation(renderingProgram, "color");
+	isPointLocation = glGetUniformLocation(renderingProgram, "isPoint");
+
 
 	glUseProgram(renderingProgram);
 
@@ -304,25 +307,37 @@ void init(GLFWwindow* window) {
 
 void display(GLFWwindow* window, double currentTime) {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glEnable(GL_POINT_SMOOTH);
+	glEnable(GL_POINT);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glPointSize(12.0f);
 	glLineWidth(4.0f);
 
+	// Draw control polygon (lines)
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
 	glBindVertexArray(VAO[1]);
 
+	glProgramUniform1i(renderingProgram, isPointLocation, 0);  // Not point rendering
 	glProgramUniform3f(renderingProgram, colorLocation, controlPoligonColor.r, controlPoligonColor.g, controlPoligonColor.b);
 	glDrawArrays(GL_LINE_STRIP, 0, myControlPoints.size());
+
+	// Draw control points
+	glProgramUniform1i(renderingProgram, isPointLocation, 1);  // Now rendering points
 	glProgramUniform3f(renderingProgram, colorLocation, controlPointsColor.r, controlPointsColor.g, controlPointsColor.b);
 	glDrawArrays(GL_POINTS, 0, myControlPoints.size());
+
 	glBindVertexArray(0);
 
-	glProgramUniform3f(renderingProgram, colorLocation, bezierCurveColor.r, bezierCurveColor.g, bezierCurveColor.b);
+	// Draw Bézier curve
 	glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
-
 	glBindVertexArray(VAO[0]);
+
+	glProgramUniform1i(renderingProgram, isPointLocation, 0);  // Line strip again
+	glProgramUniform3f(renderingProgram, colorLocation, bezierCurveColor.r, bezierCurveColor.g, bezierCurveColor.b);
 	glDrawArrays(GL_LINE_STRIP, 0, pointToDraw.size());
+
 	glBindVertexArray(0);
+
 }
 
 
